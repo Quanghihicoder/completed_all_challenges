@@ -43,6 +43,16 @@ describe("produceTiles", () => {
 
   it("should produce the correct tiles if the image is square and its size is double the maxTileDimension", async () => {
     // TODO: Write this test
-    expect(true).toBe(false);
+    await produceTiles(createImageMock({ width: 8, height: 8 }), "path", 4, {
+      prepareLevelDirectory: async (path, level) => `${path}/${level}`,
+    });
+  
+    expect(mockSave).toHaveBeenCalledTimes(6);
+    expect(mockSave).toHaveBeenCalledWith("path/0/0_0.png");
+    expect(mockSave).toHaveBeenCalledWith("path/1/0_0.png");
+    expect(mockSave).toHaveBeenCalledWith("path/2/0_0.png");
+    expect(mockSave).toHaveBeenCalledWith("path/2/0_1.png");
+    expect(mockSave).toHaveBeenCalledWith("path/2/1_0.png");
+    expect(mockSave).toHaveBeenCalledWith("path/2/1_1.png");
   });
 });
