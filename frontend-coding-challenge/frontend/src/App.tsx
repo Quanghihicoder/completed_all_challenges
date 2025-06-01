@@ -15,8 +15,9 @@ function App() {
 
   // State: zoom level
   const [zoom, setZoom] = useState(MIN_TILE_LEVEL);
+  const [transitionZoom, setTransitionZoom] = useState<number | null>(null);
 
-  // Calculate visible tiles 
+  // Calculate visible tiles
   const [visibleTiles, setVisibleTiles] = useState([]);
 
   useEffect(() => {
@@ -39,9 +40,9 @@ function App() {
   // Group by 'y' value to form rows
   const groupByY = (data: TileCoords[]) => {
     const grouped: Record<number, TileCoords[]> = {};
-    data.forEach(({z, x, y }) => {
+    data.forEach(({ z, x, y }) => {
       if (!grouped[y]) grouped[y] = [];
-      grouped[y].push({z, x, y });
+      grouped[y].push({ z, x, y });
     });
     return Object.values(grouped);
   };
@@ -69,7 +70,7 @@ function App() {
         ))}
       </div>
     );
-  }
+  };
 
   return (
     <>
@@ -77,7 +78,18 @@ function App() {
         ref={containerRef}
         className="relative min-w-screen min-h-screen bg-blue-200 no-scrollbar flex items-center justify-center"
       >
-        <GridDisplay data={visibleTiles} />
+        <div
+          className={`transition-transform duration-200 ease-in-out`}
+          style={{
+            transform:
+              transitionZoom !== null
+                ? `scale(${Math.pow(2, zoom - transitionZoom)})`
+                : "scale(1)",
+          }}
+          onTransitionEnd={() => setTransitionZoom(null)}
+        >
+          <GridDisplay data={visibleTiles} />
+        </div>
       </div>
 
       <div className="fixed bottom-6 right-6 z-10 flex flex-col gap-2">
@@ -86,7 +98,8 @@ function App() {
           aria-label="Zoom In"
           onClick={() => {
             if (!(zoom + 1 > MAX_TILE_LEVEL)) {
-              setZoom(zoom + 1);
+              setTransitionZoom(zoom + 1);
+              setTimeout(() => setZoom(zoom + 1), 200);
             }
           }}
         >
@@ -97,7 +110,8 @@ function App() {
           aria-label="Zoom Out"
           onClick={() => {
             if (!(zoom - 1 < MIN_TILE_LEVEL)) {
-              setZoom(zoom - 1);
+              setTransitionZoom(zoom - 1);
+              setTimeout(() => setZoom(zoom - 1), 200);
             }
           }}
         >
