@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 type TileCoords = {
   z: number;
@@ -26,12 +26,12 @@ function App() {
   const prevZoomRef = useRef(zoom);
 
   // Panning state
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [offset, setOffset] = useState<Offset>({ x: 0, y: 0 });
   const [isTilesOverflow, setIsTileOverflow] = useState(false);
   const draggingRef = useRef(false);
-  const dragStartRef = useRef<{ x: number; y: number } | null>(null);
-  const offsetStartRef = useRef({ x: 0, y: 0 });
-  const prevOffsetRef = useRef({ x: 0, y: 0 });
+  const dragStartRef = useRef<Offset | null>(null);
+  const offsetStartRef = useRef<Offset>({ x: 0, y: 0 });
+  const prevOffsetRef = useRef<Offset>({ x: 0, y: 0 });
 
   // Calculate visible tiles
   const [visibleTiles, setVisibleTiles] = useState<TileCoords[]>([]);
@@ -71,17 +71,16 @@ function App() {
     const scaleBefore = Math.pow(2, prevZoom);
     const scaleAfter = Math.pow(2, zoom);
 
+    // New offset to keep the same world point centered
     const worldX = (centerX - prevOffsetRef.current.x) / scaleBefore;
     const worldY = (centerY - prevOffsetRef.current.y) / scaleBefore;
 
-    // New offset to keep the same world point centered
     const newOffsetX = centerX - worldX * scaleAfter;
     const newOffsetY = centerY - worldY * scaleAfter;
 
     return { x: newOffsetX, y: newOffsetY };
   };
 
-  // Mouse events for panning
   const onMouseDown = (e: React.MouseEvent) => {
     draggingRef.current = true;
     dragStartRef.current = { x: e.clientX, y: e.clientY };
@@ -114,9 +113,8 @@ function App() {
   };
 
   // Scroll up: zoom in, Scroll down: zoom out
-  const handleWheel = (e: WheelEvent) => {
+  const handleWheel = useCallback((e: WheelEvent) => {
     if (!containerRef.current) return;
-
     e.preventDefault();
 
     const delta = Math.sign(e.deltaY);
@@ -132,20 +130,17 @@ function App() {
       setTransitionZoom(newZoom);
       setTimeout(() => setZoom(newZoom), 100);
     }
-  };
+  }, [zoom]);
 
   // Generate tile URL
   const tileUrl = ({ z, x, y }: TileCoords): string =>
     `http://localhost:8000/assets/tiles/${z}/${x}/${y}.jpg`;
 
   const GridDisplay = ({ data }: { data: TileCoords[] }) => {
-    const gridsize = Math.pow(2, zoom) * TILE_SIZE
+    const gridsize = Math.pow(2, zoom) * TILE_SIZE;
 
     return (
-      <div style={{
-        width: gridsize,
-        height:gridsize
-      }} >
+      <div style={{ width: gridsize, height: gridsize, position: "relative" }}>
         {data.map((img) => (
           <img
             key={`${img.z}-${img.x}-${img.y}`}
@@ -157,7 +152,8 @@ function App() {
             className="absolute"
             style={{
               left: img.left,
-              top: img.top
+              top: img.top,
+              position: "absolute",
             }}
           />
         ))}
@@ -165,22 +161,25 @@ function App() {
     );
   };
 
-  // Load tiles on zoom change
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    // Add scroll listener
     container.addEventListener("wheel", handleWheel, { passive: false });
 
     // Get all tiles in a zoom level
     const maxNumberOfTiles = Math.pow(2, zoom);
     const tiles: TileCoords[] = [];
+
     for (let x = 0; x < maxNumberOfTiles; x++) {
       for (let y = 0; y < maxNumberOfTiles; y++) {
-        const left = x * TILE_SIZE;
-        const top = y * TILE_SIZE;
-        tiles.push({ z: zoom, x, y, left: left, top: top });
+        tiles.push({
+          z: zoom,
+          x,
+          y,
+          left: x * TILE_SIZE,
+          top: y * TILE_SIZE,
+        });
       }
     }
     setVisibleTiles(tiles);
@@ -194,7 +193,7 @@ function App() {
       // the offset should be (0, 0) to display the image correctly.
       // We won't update prevOffsetRef, as it preserves the previous state,
       // so the next time the user zooms in, it returns to the same spot.
-      if (isTilesOverflow == true) {
+      if (isTilesOverflow === true) {
         setIsTileOverflow(false);
       }
       setOffset({ x: 0, y: 0 });
@@ -202,12 +201,10 @@ function App() {
       // If true, the image has never been fully zoomed out.
       // We calculate the new corresponding offset.
       // Otherwise, we use the previous offset stored in prevOffsetRef.
-      if (isTilesOverflow == true) {
-        const calculatedOffset: Offset | null = calculateOffsetAfterZoom();
-
+      if (isTilesOverflow === true) {
+        const calculatedOffset = calculateOffsetAfterZoom();
         if (calculatedOffset) {
-          const { x: newOffsetX, y: newOffsetY } = calculatedOffset;
-          const clamped = clampOffset(newOffsetX, newOffsetY);
+          const clamped = clampOffset(calculatedOffset.x, calculatedOffset.y);
           prevOffsetRef.current = clamped;
           setOffset(clamped);
         }
@@ -217,29 +214,29 @@ function App() {
       }
     }
 
-    // Update previous zoom
     prevZoomRef.current = zoom;
 
     return () => {
       container.removeEventListener("wheel", handleWheel);
     };
-  }, [zoom]);
+  }, [zoom, handleWheel]);
 
   return (
     <>
       <div className="min-w-screen min-h-screen flex justify-center items-center bg-blue-200">
         <div
           ref={containerRef}
-          className="max-w-screen max-h-screen overflow-hidden select-none no-scrollbar "
+          className="max-w-screen max-h-screen overflow-hidden select-none no-scrollbar"
         >
           <div
-            className={`transition-transform duration-100 ease-in-out`}
+            className="transition-transform duration-100 ease-in-out"
             style={{
               cursor: draggingRef.current ? "grabbing" : "grab",
-              transform: `translate(${offset.x}px, ${offset.y}px) ${transitionZoom !== null
+              transform: `translate(${offset.x}px, ${offset.y}px) ${
+                transitionZoom !== null
                   ? `scale(${Math.pow(2, zoom - transitionZoom)})`
                   : "scale(1)"
-                }`,
+              }`,
             }}
             onTransitionEnd={() => setTransitionZoom(null)}
             onMouseDown={onMouseDown}
@@ -251,12 +248,13 @@ function App() {
           </div>
         </div>
       </div>
+
+      {/* Zoom Buttons */}
       <div className="fixed bottom-6 right-6 z-10 flex flex-col gap-2">
         <button
           className="w-12 h-12 rounded-full bg-white text-gray-800 shadow-md border border-gray-300 flex items-center justify-center text-2xl hover:bg-gray-100 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gray-400"
-          aria-label="Zoom In"
           onClick={() => {
-            if (!(zoom + 1 > MAX_TILE_LEVEL)) {
+            if (zoom < MAX_TILE_LEVEL) {
               setTransitionZoom(zoom + 1);
               setTimeout(() => setZoom(zoom + 1), 100);
             }
@@ -266,9 +264,8 @@ function App() {
         </button>
         <button
           className="w-12 h-12 rounded-full bg-white text-gray-800 shadow-md border border-gray-300 flex items-center justify-center text-2xl hover:bg-gray-100 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gray-400"
-          aria-label="Zoom Out"
           onClick={() => {
-            if (!(zoom - 1 < MIN_TILE_LEVEL)) {
+            if (zoom > MIN_TILE_LEVEL) {
               setTransitionZoom(zoom - 1);
               setTimeout(() => setZoom(zoom - 1), 100);
             }
