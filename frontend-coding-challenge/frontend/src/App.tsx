@@ -33,6 +33,9 @@ function App() {
   const offsetStartRef = useRef<Offset>({ x: 0, y: 0 });
   const prevOffsetRef = useRef<Offset>({ x: 0, y: 0 });
 
+  // Zoom based on mouse position
+  const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
+
   // Calculate visible tiles
   const [visibleTiles, setVisibleTiles] = useState<TileCoords[]>([]);
 
@@ -116,21 +119,49 @@ function App() {
   const handleWheel = useCallback((e: WheelEvent) => {
     if (!containerRef.current) return;
     e.preventDefault();
-
+  
     const delta = Math.sign(e.deltaY);
     let newZoom = zoom;
-
+  
     if (delta > 0 && zoom > MIN_TILE_LEVEL) {
       newZoom = zoom - 1;
     } else if (delta < 0 && zoom < MAX_TILE_LEVEL) {
       newZoom = zoom + 1;
     }
-
+  
     if (newZoom !== zoom) {
+      // Calculate new offset based on mouse position
+      if (mousePosition) {
+        const container = containerRef.current;
+        const containerRect = container.getBoundingClientRect();
+        
+        // Mouse position in world coordinates
+        const worldX = (mousePosition.x) / Math.pow(2, zoom);
+        const worldY = (mousePosition.y) / Math.pow(2, zoom);
+        
+        // New offset to keep the mouse over the same world point
+        const newOffsetX = containerRect.width/2 - worldX * Math.pow(2, newZoom);
+        const newOffsetY = containerRect.height/2 - worldY * Math.pow(2, newZoom);
+        
+        const clamped = clampOffset(newOffsetX, newOffsetY);
+        prevOffsetRef.current = clamped;
+        setOffset(clamped);
+      }
+  
       setTransitionZoom(newZoom);
       setTimeout(() => setZoom(newZoom), 100);
     }
-  }, [zoom]);
+  }, [zoom, mousePosition]);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - containerRect.left - offset.x;
+    const y = e.clientY - containerRect.top - offset.y;
+    
+    setMousePosition({ x, y });
+  };
 
   // Generate tile URL
   const tileUrl = ({ z, x, y }: TileCoords): string =>
@@ -227,6 +258,7 @@ function App() {
         <div
           ref={containerRef}
           className="max-w-screen max-h-screen overflow-hidden select-none no-scrollbar"
+          onMouseMove={handleMouseMove}
         >
           <div
             className="transition-transform duration-100 ease-in-out"
