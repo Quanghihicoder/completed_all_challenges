@@ -4,6 +4,8 @@ type TileCoords = {
   z: number;
   x: number;
   y: number;
+  left: number;
+  top: number;
 };
 
 type Offset = {
@@ -114,12 +116,12 @@ function App() {
   // Scroll up: zoom in, Scroll down: zoom out
   const handleWheel = (e: WheelEvent) => {
     if (!containerRef.current) return;
-  
+
     e.preventDefault();
-  
+
     const delta = Math.sign(e.deltaY);
     let newZoom = zoom;
-  
+
     if (delta > 0 && zoom > MIN_TILE_LEVEL) {
       newZoom = zoom - 1;
     } else if (delta < 0 && zoom < MAX_TILE_LEVEL) {
@@ -136,36 +138,28 @@ function App() {
   const tileUrl = ({ z, x, y }: TileCoords): string =>
     `http://localhost:8000/assets/tiles/${z}/${x}/${y}.jpg`;
 
-  // Group by 'y' value to form rows
-  const groupByY = (data: TileCoords[]) => {
-    const grouped: Record<number, TileCoords[]> = {};
-    data.forEach(({ z, x, y }) => {
-      if (!grouped[y]) grouped[y] = [];
-      grouped[y].push({ z, x, y });
-    });
-    return Object.values(grouped);
-  };
-
   const GridDisplay = ({ data }: { data: TileCoords[] }) => {
-    const rows = groupByY(data);
+    const gridsize = Math.pow(2, zoom) * TILE_SIZE
 
     return (
-      <div className="flex flex-col">
-        {rows.map((row, rowIndex) => (
-          <div key={rowIndex} className="flex flex-row">
-            {row
-              .sort((a, b) => a.x - b.x)
-              .map((point) => (
-                <img
-                  key={`${point.z}-${point.x}-${point.y}`}
-                  src={tileUrl(point)}
-                  alt={`Tile ${point.z}-${point.x}-${point.y}`}
-                  width={TILE_SIZE}
-                  height={TILE_SIZE}
-                  draggable={false}
-                />
-              ))}
-          </div>
+      <div style={{
+        width: gridsize,
+        height:gridsize
+      }} >
+        {data.map((img) => (
+          <img
+            key={`${img.z}-${img.x}-${img.y}`}
+            src={tileUrl(img)}
+            alt={`Tile ${img.z}-${img.x}-${img.y}`}
+            width={TILE_SIZE}
+            height={TILE_SIZE}
+            draggable={false}
+            className="absolute"
+            style={{
+              left: img.left,
+              top: img.top
+            }}
+          />
         ))}
       </div>
     );
@@ -184,7 +178,9 @@ function App() {
     const tiles: TileCoords[] = [];
     for (let x = 0; x < maxNumberOfTiles; x++) {
       for (let y = 0; y < maxNumberOfTiles; y++) {
-        tiles.push({ z: zoom, x, y });
+        const left = x * TILE_SIZE;
+        const top = y * TILE_SIZE;
+        tiles.push({ z: zoom, x, y, left: left, top: top });
       }
     }
     setVisibleTiles(tiles);
@@ -207,7 +203,6 @@ function App() {
       // We calculate the new corresponding offset.
       // Otherwise, we use the previous offset stored in prevOffsetRef.
       if (isTilesOverflow == true) {
-
         const calculatedOffset: Offset | null = calculateOffsetAfterZoom();
 
         if (calculatedOffset) {
@@ -225,7 +220,6 @@ function App() {
     // Update previous zoom
     prevZoomRef.current = zoom;
 
-
     return () => {
       container.removeEventListener("wheel", handleWheel);
     };
@@ -242,11 +236,10 @@ function App() {
             className={`transition-transform duration-100 ease-in-out`}
             style={{
               cursor: draggingRef.current ? "grabbing" : "grab",
-              transform: `translate(${offset.x}px, ${offset.y}px) ${
-                transitionZoom !== null
+              transform: `translate(${offset.x}px, ${offset.y}px) ${transitionZoom !== null
                   ? `scale(${Math.pow(2, zoom - transitionZoom)})`
                   : "scale(1)"
-              }`,
+                }`,
             }}
             onTransitionEnd={() => setTransitionZoom(null)}
             onMouseDown={onMouseDown}
