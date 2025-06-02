@@ -19,6 +19,22 @@ A self-signed HTTPS certificate would show an urly browser warning, so HTTP is t
 
 ---
 
+## ✨ Features (All extras)
+
+- **Zoom Controls**
+  - Zoom using buttons
+  - Zoom using mouse scroll & panning
+  - Zoom centered around mouse pointer for intuitive navigation (so hard!)
+
+- **Smart Tile Loading**
+  - Loads only visible tiles + 2-tile buffer in all directions. Smooth transition. (so hard!)
+  - Check backend logs to confirm tile loading behavior
+
+- **Viewport Memory**
+  - Remembers previous panning offset and restores it
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -70,21 +86,5 @@ A self-signed HTTPS certificate would show an urly browser warning, so HTTP is t
    ```bash
    npm start
    ```
-
----
-
-## ✨ Features
-
-- **Zoom Controls**
-  - Zoom using buttons
-  - Zoom using mouse scroll & panning
-  - Zoom centered around mouse pointer for intuitive navigation
-
-- **Smart Tile Loading**
-  - Loads only visible tiles + 2-tile buffer in all directions. Smooth transition.
-  - Check backend logs to confirm tile loading behavior
-
-- **Viewport Memory**
-  - Remembers previous panning offset and restores it
 
 ---
