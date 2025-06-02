@@ -1,4 +1,4 @@
-# Propeller Aero Interview Challenges
+# Interview Challenges
 
 ## Progress: 2 of 4 Challenges Completed  
 ✅ Frontend  
