@@ -16,7 +16,7 @@ type Offset = {
 const TILE_SIZE = 256;
 const MIN_TILE_LEVEL = 0;
 const MAX_TILE_LEVEL = 3;
-const BUFFER = 2; 
+const BUFFER = 2;
 
 function App() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,8 +35,16 @@ function App() {
   const offsetStartRef = useRef<Offset>({ x: 0, y: 0 });
   const prevOffsetRef = useRef<Offset>({ x: 0, y: 0 });
 
+  // Add a new state for tracking transitioning tiles
+  const [transitioningTiles, setTransitioningTiles] = useState<TileCoords[]>(
+    []
+  );
+
   // Zoom based on mouse position
-  const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
+  const [mousePosition, setMousePosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
 
   // Calculate visible tiles
   const [visibleTiles, setVisibleTiles] = useState<TileCoords[]>([]);
@@ -44,18 +52,24 @@ function App() {
   const calculateVisibleTiles = useCallback(() => {
     const container = containerRef.current;
     if (!container) return [];
-  
+
     const maxNumberOfTiles = Math.pow(2, zoom);
     const startTileX = Math.max(0, Math.floor(-offset.x / TILE_SIZE));
     const startTileY = Math.max(0, Math.floor(-offset.y / TILE_SIZE));
     const tilesX = Math.ceil(container.clientWidth / TILE_SIZE);
     const tilesY = Math.ceil(container.clientHeight / TILE_SIZE);
-  
+
     const minX = Math.max(0, startTileX - BUFFER);
-    const maxX = Math.min(maxNumberOfTiles - 1, startTileX + tilesX + BUFFER - 1);
+    const maxX = Math.min(
+      maxNumberOfTiles - 1,
+      startTileX + tilesX + BUFFER - 1
+    );
     const minY = Math.max(0, startTileY - BUFFER);
-    const maxY = Math.min(maxNumberOfTiles - 1, startTileY + tilesY + BUFFER - 1);
-  
+    const maxY = Math.min(
+      maxNumberOfTiles - 1,
+      startTileY + tilesY + BUFFER - 1
+    );
+
     const tiles: TileCoords[] = [];
     for (let x = minX; x <= maxX; x++) {
       for (let y = minY; y <= maxY; y++) {
@@ -129,7 +143,7 @@ function App() {
     const dy = e.clientY - dragStartRef.current.y;
 
     // // Accumulate drag delta
-    setDragDelta(prev => ({
+    setDragDelta((prev) => ({
       x: prev.x + dx,
       y: prev.y + dy,
     }));
@@ -154,50 +168,55 @@ function App() {
   };
 
   // Scroll up: zoom in, Scroll down: zoom out
-  const handleWheel = useCallback((e: WheelEvent) => {
-    if (!containerRef.current) return;
-    e.preventDefault();
-  
-    const delta = Math.sign(e.deltaY);
-    let newZoom = zoom;
-  
-    if (delta > 0 && zoom > MIN_TILE_LEVEL) {
-      newZoom = zoom - 1;
-    } else if (delta < 0 && zoom < MAX_TILE_LEVEL) {
-      newZoom = zoom + 1;
-    }
-  
-    if (newZoom !== zoom) {
-      // Calculate new offset based on mouse position
-      if (mousePosition) {
-        const container = containerRef.current;
-        const containerRect = container.getBoundingClientRect();
-        
-        // Mouse position in world coordinates
-        const worldX = (mousePosition.x) / Math.pow(2, zoom);
-        const worldY = (mousePosition.y) / Math.pow(2, zoom);
-        
-        // New offset to keep the mouse over the same world point
-        const newOffsetX = containerRect.width/2 - worldX * Math.pow(2, newZoom);
-        const newOffsetY = containerRect.height/2 - worldY * Math.pow(2, newZoom);
-        
-        const clamped = clampOffset(newOffsetX, newOffsetY);
-        prevOffsetRef.current = clamped;
-        setOffset(clamped);
+  const handleWheel = useCallback(
+    (e: WheelEvent) => {
+      if (!containerRef.current) return;
+      e.preventDefault();
+
+      const delta = Math.sign(e.deltaY);
+      let newZoom = zoom;
+
+      if (delta > 0 && zoom > MIN_TILE_LEVEL) {
+        newZoom = zoom - 1;
+      } else if (delta < 0 && zoom < MAX_TILE_LEVEL) {
+        newZoom = zoom + 1;
       }
-  
-      setTransitionZoom(newZoom);
-      setTimeout(() => setZoom(newZoom), 100);
-    }
-  }, [zoom, mousePosition]);
+
+      if (newZoom !== zoom) {
+        // Calculate new offset based on mouse position
+        if (mousePosition) {
+          const container = containerRef.current;
+          const containerRect = container.getBoundingClientRect();
+
+          // Mouse position in world coordinates
+          const worldX = mousePosition.x / Math.pow(2, zoom);
+          const worldY = mousePosition.y / Math.pow(2, zoom);
+
+          // New offset to keep the mouse over the same world point
+          const newOffsetX =
+            containerRect.width / 2 - worldX * Math.pow(2, newZoom);
+          const newOffsetY =
+            containerRect.height / 2 - worldY * Math.pow(2, newZoom);
+
+          const clamped = clampOffset(newOffsetX, newOffsetY);
+          prevOffsetRef.current = clamped;
+          setOffset(clamped);
+        }
+
+        setTransitionZoom(newZoom);
+        setTimeout(() => setZoom(newZoom), 100);
+      }
+    },
+    [zoom, mousePosition]
+  );
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
-    
+
     const containerRect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - containerRect.left - offset.x;
     const y = e.clientY - containerRect.top - offset.y;
-    
+
     setMousePosition({ x, y });
   };
 
@@ -205,11 +224,38 @@ function App() {
   const tileUrl = ({ z, x, y }: TileCoords): string =>
     `http://localhost:8000/assets/tiles/${z}/${x}/${y}.jpg`;
 
-  const GridDisplay = ({ data }: { data: TileCoords[] }) => {
+  // GridDisplay component to show both transitioning and visible tiles
+  const GridDisplay = ({
+    data,
+    transitioningData,
+  }: {
+    data: TileCoords[];
+    transitioningData: TileCoords[];
+  }) => {
     const gridsize = Math.pow(2, zoom) * TILE_SIZE;
 
     return (
       <div style={{ width: gridsize, height: gridsize, position: "relative" }}>
+        {/* Transitioning out tiles (fading out) */}
+        {transitioningData.map((img) => (
+          <img
+            key={`transition-${img.z}-${img.x}-${img.y}`}
+            src={tileUrl(img)}
+            alt={`Tile ${img.z}-${img.x}-${img.y}`}
+            width={TILE_SIZE}
+            height={TILE_SIZE}
+            draggable={false}
+            className="absolute transition-opacity duration-200"
+            style={{
+              left: img.left,
+              top: img.top,
+              position: "absolute",
+              opacity: 0.5, // Fade out effect
+            }}
+          />
+        ))}
+
+        {/* Current visible tiles (fading in) */}
         {data.map((img) => (
           <img
             key={`${img.z}-${img.x}-${img.y}`}
@@ -218,11 +264,12 @@ function App() {
             width={TILE_SIZE}
             height={TILE_SIZE}
             draggable={false}
-            className="absolute"
+            className="absolute transition-opacity duration-200"
             style={{
               left: img.left,
               top: img.top,
               position: "absolute",
+              opacity: 1,
             }}
           />
         ))}
@@ -233,20 +280,28 @@ function App() {
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-  
+
     // Check if we've dragged enough to change tiles (256px)
     const tileChangeX = Math.floor(dragDelta.x / TILE_SIZE);
     const tileChangeY = Math.floor(dragDelta.y / TILE_SIZE);
-  
+
     if (tileChangeX !== 0 || tileChangeY !== 0) {
+      // Keep the old tiles visible during transition
+      setTransitioningTiles(visibleTiles);
+
       // Reset drag delta with remainder
       setDragDelta({
         x: dragDelta.x % TILE_SIZE,
         y: dragDelta.y % TILE_SIZE,
       });
-  
+
       // Update visible tiles
       setVisibleTiles(calculateVisibleTiles());
+
+      // After transition completes, remove the old tiles
+      setTimeout(() => {
+        setTransitioningTiles([]);
+      }, 200);
     }
   }, [dragDelta, calculateVisibleTiles]);
 
@@ -320,7 +375,10 @@ function App() {
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseLeave}
           >
-            <GridDisplay data={visibleTiles} />
+            <GridDisplay
+              data={visibleTiles}
+              transitioningData={transitioningTiles}
+            />
           </div>
         </div>
       </div>
