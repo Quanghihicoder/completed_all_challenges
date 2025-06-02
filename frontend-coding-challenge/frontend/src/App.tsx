@@ -16,6 +16,7 @@ type Offset = {
 const TILE_SIZE = 256;
 const MIN_TILE_LEVEL = 0;
 const MAX_TILE_LEVEL = 3;
+const BUFFER = 2; 
 
 function App() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -30,6 +31,7 @@ function App() {
   const [isTilesOverflow, setIsTileOverflow] = useState(false);
   const draggingRef = useRef(false);
   const dragStartRef = useRef<Offset | null>(null);
+  const [dragDelta, setDragDelta] = useState<Offset>({ x: 0, y: 0 });
   const offsetStartRef = useRef<Offset>({ x: 0, y: 0 });
   const prevOffsetRef = useRef<Offset>({ x: 0, y: 0 });
 
@@ -38,6 +40,36 @@ function App() {
 
   // Calculate visible tiles
   const [visibleTiles, setVisibleTiles] = useState<TileCoords[]>([]);
+
+  const calculateVisibleTiles = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return [];
+  
+    const maxNumberOfTiles = Math.pow(2, zoom);
+    const startTileX = Math.max(0, Math.floor(-offset.x / TILE_SIZE));
+    const startTileY = Math.max(0, Math.floor(-offset.y / TILE_SIZE));
+    const tilesX = Math.ceil(container.clientWidth / TILE_SIZE);
+    const tilesY = Math.ceil(container.clientHeight / TILE_SIZE);
+  
+    const minX = Math.max(0, startTileX - BUFFER);
+    const maxX = Math.min(maxNumberOfTiles - 1, startTileX + tilesX + BUFFER - 1);
+    const minY = Math.max(0, startTileY - BUFFER);
+    const maxY = Math.min(maxNumberOfTiles - 1, startTileY + tilesY + BUFFER - 1);
+  
+    const tiles: TileCoords[] = [];
+    for (let x = minX; x <= maxX; x++) {
+      for (let y = minY; y <= maxY; y++) {
+        tiles.push({
+          z: zoom,
+          x,
+          y,
+          left: x * TILE_SIZE,
+          top: y * TILE_SIZE,
+        });
+      }
+    }
+    return tiles;
+  }, [zoom, offset.x, offset.y]);
 
   // Clamp offset so user can't pan beyond edges
   const clampOffset = (x: number, y: number) => {
@@ -95,6 +127,12 @@ function App() {
 
     const dx = e.clientX - dragStartRef.current.x;
     const dy = e.clientY - dragStartRef.current.y;
+
+    // // Accumulate drag delta
+    setDragDelta(prev => ({
+      x: prev.x + dx,
+      y: prev.y + dy,
+    }));
 
     const newOffsetX = offsetStartRef.current.x + dx;
     const newOffsetY = offsetStartRef.current.y + dy;
@@ -195,25 +233,31 @@ function App() {
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+  
+    // Check if we've dragged enough to change tiles (256px)
+    const tileChangeX = Math.floor(dragDelta.x / TILE_SIZE);
+    const tileChangeY = Math.floor(dragDelta.y / TILE_SIZE);
+  
+    if (tileChangeX !== 0 || tileChangeY !== 0) {
+      // Reset drag delta with remainder
+      setDragDelta({
+        x: dragDelta.x % TILE_SIZE,
+        y: dragDelta.y % TILE_SIZE,
+      });
+  
+      // Update visible tiles
+      setVisibleTiles(calculateVisibleTiles());
+    }
+  }, [dragDelta, calculateVisibleTiles]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
     container.addEventListener("wheel", handleWheel, { passive: false });
 
-    // Get all tiles in a zoom level
-    const maxNumberOfTiles = Math.pow(2, zoom);
-    const tiles: TileCoords[] = [];
-
-    for (let x = 0; x < maxNumberOfTiles; x++) {
-      for (let y = 0; y < maxNumberOfTiles; y++) {
-        tiles.push({
-          z: zoom,
-          x,
-          y,
-          left: x * TILE_SIZE,
-          top: y * TILE_SIZE,
-        });
-      }
-    }
-    setVisibleTiles(tiles);
+    // Initial tile calculation
+    setVisibleTiles(calculateVisibleTiles());
 
     // To give the user the best experience, we need to calculate the corresponding offset after zoom.
     if (
@@ -250,7 +294,7 @@ function App() {
     return () => {
       container.removeEventListener("wheel", handleWheel);
     };
-  }, [zoom, handleWheel]);
+  }, [zoom, handleWheel, calculateVisibleTiles]);
 
   return (
     <>
