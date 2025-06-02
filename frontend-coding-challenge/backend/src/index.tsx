@@ -54,6 +54,13 @@ const sendError = (req: Request, res: Response): void => {
   res.type('txt').send('Not Found');
 };
 
+app.use(express.static(path.join(__dirname, './site/')));
+
+app.get('/', (req, res) => {
+    res.set('Content-Type', 'text/html');
+    res.sendFile(path.join(__dirname, './site/index.html'))
+});
+
 app.get('/assets/tiles/:z/:x/:y', (req: Request, res: Response) => {
   const { z, x, y } = req.params;
   const filePath = path.join(__dirname, 'assets', 'tiles', z, x, y);
