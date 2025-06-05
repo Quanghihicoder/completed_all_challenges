@@ -28,5 +28,5 @@ Surrender - good test!
 
 Easy done.
 
-There is a typo on line 35 in the challenge's README.md.
+There is a typo on line 35 in the QA challenge's README.md (click the link).
 
