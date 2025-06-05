@@ -4,7 +4,7 @@
 ✅ Frontend  
 ✅ Backend  
 ❌ QA  
-❌ Infrastructure
+✋🤚 (Surrender) Infrastructure
 
 Each challenge has its own README file with detailed instructions and solutions.
 
@@ -19,6 +19,10 @@ http://52.64.183.96:8000/
 ## 🗄️ Backend Challenge
 
 I heard there's a donut! 🍩
+
+## 🧱 Infrastructure Challenge
+
+Surrender - good test! 
 
 
 
