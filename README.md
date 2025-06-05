@@ -1,9 +1,9 @@
 # Interview Challenges
 
-## Progress: 2 of 4 Challenges Completed  
+## Progress: 3 of 4 Challenges Completed  
 ✅ Frontend  
 ✅ Backend  
-❌ QA  
+✅ QA  
 ✋🤚 (Surrender) Infrastructure
 
 Each challenge has its own README file with detailed instructions and solutions.
@@ -24,5 +24,7 @@ I heard there's a donut! 🍩
 
 Surrender - good test! 
 
+## 🔍 QA Challenge
 
+Easy done.
 
