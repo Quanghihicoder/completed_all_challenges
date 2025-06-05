@@ -1,0 +1,16 @@
+{
+  "idp_name": "http://172.17.0.1:9000",
+  "port": 9000,
+  "client_config": [
+    {
+      "client_id": "oauth2-proxy",
+      "client_secret": "secret",
+      "redirect_uris": ["http://localhost:5000/oauth2/callback"]
+    }
+  ],
+  "claim_mapping": {
+    "openid": [ "sub" ],
+    "email": [ "email", "email_verified" ],
+    "profile": [ "name", "nickname" ]
+  }
+}
