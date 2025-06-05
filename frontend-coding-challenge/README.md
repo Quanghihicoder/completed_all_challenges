@@ -35,6 +35,14 @@ A self-signed HTTPS certificate would show an urly browser warning, so HTTP is t
 
 ---
 
+## Notes
+
+Oh, I just realized during the QA challenge that you guys are using translate3d instead of position: absolute with top and left.
+
+Besides the fact that the production is 3D and this might be the only viable approach, it also benefits from GPU utilization and results in smoother animations.
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
