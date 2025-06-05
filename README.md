@@ -22,7 +22,7 @@ I heard there's a donut! 🍩
 
 ## 🧱 Infrastructure Challenge
 
-Surrender - good test! 
+Reserve-proxy challenge: Surrender - good test! 
 
 ## 🔍 QA Challenge
 
