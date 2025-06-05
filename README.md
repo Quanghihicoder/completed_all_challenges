@@ -26,7 +26,4 @@ Reserve-proxy challenge: Surrender - good test!
 
 ## 🔍 QA Challenge
 
-Easy done.
-
-There is a typo on line 35 in the QA challenge's README.md (click the link).
-
+Done
