@@ -28,8 +28,7 @@ handling edge cases where the image dimensions are not perfectly divisible by 25
   - Example: image width % 256 = 100 → last tile overlaps 156px with the previous tile.
 - The same applies to height.
 
-Image Reference:
-https://github.com/Quanghihicoder/completed_challenges/blob/master/images/cut_logic.jpeg
+![Cropping Logic](https://github.com/Quanghihicoder/completed_challenges/blob/master/propelleraero/images/cut_logic.jpeg)
 
 ---
 
