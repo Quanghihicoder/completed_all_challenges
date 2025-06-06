@@ -5,9 +5,9 @@ Thank you for appreciating my work and effort!
 
 # Welcome to the Ultimate Solutions for Technical Assessments / Challenges
 
-Targeted market: Australia
+Targeted market: **Australia**
 
-Covered:
+**Covered**:
 
 - Frontend, Backend, DevOps, Full-stack
 
@@ -23,7 +23,7 @@ Not Covered (not my personal interests):
 
 # Summary Statistics
 
-I am "pain-level" developer :))))))))))))))))))))))))
+**I am "pain-level" developer :))))))))))))))))))))))))**
 
 Attempted:
 
@@ -78,7 +78,7 @@ Just imagine you’re the recruiter and you receive a junior-level application w
 
 # Disclamer
 
-1. To companies:
+1. **To companies**:
 
 If your companies is in this list, it does not mean that I am frustuate with your company's hiring process. It is because:
 
