@@ -27,8 +27,6 @@ Not Covered (not my personal interests):
 
 # Summary Statistics
 
-**I am "pain-level" developer :))))))))))))))))))))))))**
-
 **Attempted**:
 
 - 5 challenges won
