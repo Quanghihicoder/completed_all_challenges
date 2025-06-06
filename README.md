@@ -52,7 +52,7 @@ Challenges are organized into folders named after companies. Each challenge cont
 # ❓Why
 
 In 2025, it’s extremely difficult to find an entry-level job.
-So I took a different approach: complete as many public tech assessments from companies as possible and submit them as part of my cover letter. Yep, even before any interview or meeting, they already know I can do the job—right from the moment they read my CV or cover letter. 
+So I took a different approach: complete as many public tech assessments from companies as possible and submit them as part of my cover letter. Yep, even before any interview or meeting or being shortlisted, they already know I can do the job—right from the moment they read my CV or cover letter. 
 
 + ✅ Make it harder for them to reject my CV (especially if they know that I can actually do the job)
 
