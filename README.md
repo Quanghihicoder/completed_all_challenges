@@ -45,6 +45,10 @@ Not Covered (not my personal interests):
 
 - Lead-level: 0 challenges
 
+# How to use
+
+Challenges are organized into folders named after companies. Each challenge contains a README that includes a runbook, description, and explanation.
+
 # ❓Why
 
 In 2025, it’s extremely difficult to find an entry-level job.
@@ -112,7 +116,7 @@ To everyone else:
 
 The solutions are my own solutions, not by AI, not copy from anyone. I am okay if you use it as learning material. 
 
-These technical assessments are either publish by their companies as open source or guessing from one of their previous candidates solutions. I am not violate any NDA agreement. 
+**These technical assessments are either publish by their companies as open source or guessing from one of their previous candidates solutions. I am not violate any NDA agreement.** 
 
 # Me
 
@@ -130,4 +134,6 @@ Dont worry, a dude can not change the world, companies will not bring back on-si
 
 Cheers!
 
-![Ginger Beer](image-url)
+![Ginger Beer](https://github.com/Quanghihicoder/completed_challenges/blob/master/images/Ginger_Beer.jpeg)
+
+![Selfie](https://github.com/Quanghihicoder/completed_challenges/blob/master/images/Selfie.jpeg)
