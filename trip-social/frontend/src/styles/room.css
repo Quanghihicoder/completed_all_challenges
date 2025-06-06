@@ -1,0 +1,134 @@
+.Room {
+    display: flex;
+    flex-direction: column;
+}
+
+.Room .Overlay {
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Room .OverlayControl {
+    position: absolute;
+    padding: 20px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6vh;
+    border-radius: 20px;
+    z-index: 2;
+}
+
+.Room .OverlayControl div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
+}
+
+.Room .Header {
+    width: 100%;
+    height: 13vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+.Room .Header .Title {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.Room .Body {
+    width: 100%;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Room .Body .List {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
+}
+
+.Room .Body .List .Item {
+    width: 70%;
+    padding: 1vh;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    background-color: #739F7E;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    
+}
+
+.Room .Body .List .Header {
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.Room .Body .List .Header .Input {
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+
+.Room .Body .List .Header .Input .InputTitle {
+    font-weight: bold;
+}
+
+.Room .Body .List .Header .Input .InputBox {
+    width: 100%;
+}
+
+.Room .Body .List .Header .Input button {
+    background-color: #f4a261;
+    color: white;
+    font-weight: bold;
+    border: transparent;
+    border-radius: 10px ;
+}
+
+.Room .Body .List .Header .Reload {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: transparent;
+    border: transparent !important;
+
+    
+}
+
+.Room .Body .List .Header .Reload:active {
+    background-color: #E0E0E0;
+}

@@ -1,0 +1,112 @@
+.App {
+    min-height: 100vh;
+    min-width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(239, 244, 252);
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+a:link {
+    text-decoration: none;
+  }
+  
+  a:visited {
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: none;
+  }
+  
+  a:active {
+    text-decoration: none;
+  }
+
+.Container {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Green {
+    color: #2a9d8f;
+}
+
+.Orange {
+    color: #f4a261;
+}
+
+.Navy {
+    color: #264653;
+}
+
+.None {
+    display: none !important;
+}
+
+.Hidden {
+    visibility: hidden !important;
+}
+
+.Button {
+    color: white !important;
+    font-weight: bold;
+    text-align: center;
+}
+
+.Button.Big {
+    font-size: 36px;
+    padding: 20px;
+    border: 10px solid white;
+    border-radius: 30px;
+}
+
+.Button.Medium {
+    font-size: 24px;
+    padding: 15px;
+    border: 5px solid white;
+    border-radius: 20px;
+}
+
+.Button.Small {
+    font-size: 20px;
+    padding: 6px 0px;
+    border: 2px solid white;
+    border-radius: 8px;
+}
+
+.Button.Green {
+    background-color: #2a9d8f;
+}
+
+.Button.Orange {
+    background-color: #f4a261;
+}
+
+.Button.Navy {
+    background-color: #264653;
+}
+
+.Button.Gray {
+    background-color: gray;
+}
+
+.Button.Red {
+    background-color: red;
+}
+
+.ErrorMessage {
+    color: red;
+}

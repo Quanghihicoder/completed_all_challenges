@@ -1,0 +1,3 @@
+DROP DATABASE IF EXISTS xogame; 
+
+CREATE DATABASE xogame;

@@ -1,0 +1,100 @@
+.Home .BackgroundIcon {
+    width: 80vh;
+    height: 80vh;
+}
+
+.Home .Overlay {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    width: 100%; 
+    min-height: 100%;
+    height: max-content;
+    gap: 10vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    background-color: rgba(239, 244, 252, 0.92);
+
+}
+
+.Home .Overlay .Title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.Home .Overlay .Title p {
+    font-size: 100px;
+    font-weight: bold;
+    animation: waviy 2s infinite;
+    animation-delay: calc(.1s * var(--i));
+}
+
+.Home .Overlay .Title p:nth-child(1) {
+    animation-delay: 0.2s;
+}
+
+.Home .Overlay .Title p:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.Home .Overlay .Title p:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+.Home .Overlay .Title p:nth-child(4) {
+    animation-delay: 0.8s;
+}
+
+
+@keyframes waviy {
+    0%,40%,100% {
+      transform: translateY(0)
+    }
+    
+    20% {
+      transform: translateY(-30px)
+    }
+}
+
+.Home .Settings {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3vh;
+    background-color: rgba(38, 70, 83, 0.3);
+    border-radius: 25px;
+}
+
+.Home .Settings .Title {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.Home .Settings .InputContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
+    color: white;
+    font-weight: bolder;
+}
+
+.Home .Buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 6vw
+}
