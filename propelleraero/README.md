@@ -1,6 +1,6 @@
 # Solutions for Propeller Aero Technical Challenges (Tech Assessments)
 
-Company's GitHub repo: https://github.com/PropellerAero
+[Company's GitHub repo](https://github.com/PropellerAero)
 
 ## Progress: 3 of 4 Challenges Completed  
 ✅ Frontend  
