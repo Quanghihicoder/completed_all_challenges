@@ -1,4 +1,4 @@
-# Propeller Aero Technical Challenges (Tech Assessments)
+# Solutions for Propeller Aero Technical Challenges (Tech Assessments)
 
 Company's GitHub repo: https://github.com/PropellerAero
 
