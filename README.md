@@ -31,7 +31,7 @@ Not Covered (not my personal interests):
 
 **Attempted**:
 
-- 3 challenges won
+- 5 challenges won
 
 - 1 challenge surrendered
 
@@ -39,7 +39,7 @@ Not Covered (not my personal interests):
 
 **Completed**:
 
-- Junior & Mid-level: 3 challenges
+- Junior & Mid-level: 5 challenges
 
 - Senior-level: 0 challenges
 
