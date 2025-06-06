@@ -116,7 +116,15 @@ To everyone else:
 
 The solutions are my own solutions, not by AI, not copy from anyone. I am okay if you use it as learning material. 
 
-**These technical assessments are either publish by their companies as open source or guessing from one of their previous candidates solutions. I am not violate any NDA agreement.** 
+**These technical assessments are from**:
+
++ Published by their companies as open source.
+
++ My own application in my previous positions.
+
++ Guessed from one of their previous candidates’ solutions (as they published as open source).
+
+I am not violate any NDA agreement. 
 
 # Me
 
