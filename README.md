@@ -56,19 +56,17 @@ So I took a different approach: complete as many public tech assessments from co
 
 + ✅ Show real effort and genuine interest through actions, not just words in an AI-sounding cover letter.
 
-+ ✅ Keywords and numbers can be faked (background check later).But skills? Skills are real—and the strongest form of direct proof.
++ ✅ Keywords and numbers can be faked (background check later). Skills are real—and the strongest form of direct proof.
 
 + ✅ Improve chances of getting shortlisted—or even 1st prioritized
 
 + ✅ Shorten the interview process: ideally, after this, a single on-site interview with HR, devs, managers, and CTO should be enough to make a decision. One-month-long interview pipelines are too time-consuming for everyone.
 
-**Just imagine you’re the recruiter and you receive a junior-level application with working solutions to your own company’s senior-level tech assessments.**
-
 ---
 
-I’ve received too many meaningless rejections. I hope this proves something:
+I hope this proves something:
 
-+ An experienced in Node.js and C#,can surely code in Next.js, NestJS, Spring Boot, Django (Python), Laravel (PHP).
++ An experienced in Node.js and C#,can surely code in Next.js, NestJS, Spring Boot (Java), Django (Python), Laravel (PHP).
 
 + An experienced in React Native, can surely code in Flutter. An experienced in Android, can code for iOS.
 
@@ -76,7 +74,7 @@ I’ve received too many meaningless rejections. I hope this proves something:
 
 + Server, serverless, microservices, monolith, event-driven, it’s all just different coding styles, bruh.
 
-+ A junior dev (<3 years experience) can complete senior or lead-level challenges. What's missing isn't tech skill—it's leadership, sales, legal and presentation skills.
++ Years of experience is sometimes just a number if the difference is less than 2 years.
 
 ---
 
@@ -89,28 +87,6 @@ Personal
 - Nobody appreciates personal projects or portfolios—they don’t even look at them. But if you use that same energy to solve their own tech assessments—completely different level of attention.
 
 # Disclamer
-
-**To companies**:
-
-If your companies is in this list, it does not mean that I am frustuate with your company's hiring process. It is because:
-
-+ I want to work at your company. 
-
-+ Your company has public challenges.
-
-+ I read your company's leader bio, I believe they want good people, and know who are great developers.
-
----
-
-To developers (who will attend one of these companies's assessment):
-
-Only take it as references please, do it on your own knowledge. They might ask for some modification, or explain something. It is hard to explain if it is not your own ordinary solutions. 
-
-=> Then you will deserve the position/offer. 
-
----
-
-To everyone else: 
 
 The solutions are my own solutions, not by AI, not copy from anyone. I am okay if you use it as learning material. 
 
@@ -131,8 +107,6 @@ I am just a Gen Z developer, trying my best to get in this competitive fields. I
 > I just want an entry-level position—a basic need for any living person—but I've experienced so many bad things that it pushed me to do this. Well, at least I’m fighting for it instead of just sitting.
 
 Dont worry, a dude can not change the world, companies will not bring back on-site interview culture.
-
-[Shinra Tensei](https://www.youtube.com/watch?v=An1ZrG0mbf4)
 
 [Motivation Music 1](https://www.youtube.com/watch?v=eULhfgxZZN8)
 
