@@ -1,0 +1,29 @@
+.projects-container {
+  width: 100%;
+  margin-top: 100px;
+  display: flex;
+  flex-wrap: wrap;
+
+  .project-box{
+    color: white;
+    width: 250px;
+    height: 250px;
+    border-radius: 8px;
+    border: 2px solid #ffffff;
+    font-size: 18px;
+    letter-spacing: 1px;
+    font-family: 'GT-Walsheim';
+    font-weight: normal;
+    margin-right: 20px;
+    margin-bottom: 20px;
+  }
+
+  .project-text{
+    margin: 15px;
+    margin-top: 25px;
+  }
+  .project-decription{
+    overflow: scroll;
+    max-height: 150px;
+  }
+}
