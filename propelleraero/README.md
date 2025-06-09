@@ -12,11 +12,9 @@ Each challenge has its own README file with detailed instructions and solutions.
 
 ---
 
-## 🌐 Frontend Challenge - Live Demo  
+## 🌐 Frontend Challenge  
 
-Access the deployed frontend challenge here:  
-
-http://52.64.183.96:8000/
+Done
 
 ## 🗄️ Backend Challenge
 

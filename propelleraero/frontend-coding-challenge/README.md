@@ -4,21 +4,6 @@ This project is a tile-based map viewer with an efficient frontend-backend archi
 
 ---
 
-## Live Demo
-
-http://52.64.183.96:8000/
-
-I set up a simple host on AWS EC2 (Ubuntu, t2.small).
-
-I'm not sure if it can handle a heavy load, and it's currently running manually without a large cloud setup.
-
-If the URL changes, I’ll update it here.
-
-Please note: it's using HTTP (not HTTPS) because I’m not using a domain name or paid certificate.
-A self-signed HTTPS certificate would show an urly browser warning, so HTTP is the better option for now.
-
----
-
 ## ✨ Features (All extras)
 
 - **Zoom Controls**
