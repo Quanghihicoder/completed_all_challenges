@@ -82,10 +82,10 @@ const produceTiles = async (
       for (let x = 0; x < maxNumTileWidth; x++) {
         for (let y = 0; y < maxNumTileHeight; y++) {
           const extracted = await resized.extract(
-            (x == maxNumTileWidth - 1) ? (levelWidth - maxTileDimension - 1) : x * maxTileDimension,
-            (y == maxNumTileHeight - 1) ? (levelHeight - maxTileDimension - 1) : y * maxTileDimension,
-            maxTileDimension,
-            maxTileDimension
+            (x == maxNumTileWidth - 1 && levelWidth - 1 > maxTileDimension) ? (levelWidth - maxTileDimension - 1) : x * maxTileDimension,
+            (y == maxNumTileHeight - 1 && levelHeight - 1 > maxTileDimension) ? (levelHeight - maxTileDimension - 1) : y * maxTileDimension,
+            levelWidth - 1 > maxTileDimension ? maxTileDimension : levelWidth - 1,
+            levelHeight - 1 > maxTileDimension ? maxTileDimension : levelHeight - 1
           );
           await extracted.save(join(tileLevelDirectory, getImageName(x, y)));
         }
