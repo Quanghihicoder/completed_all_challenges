@@ -46,3 +46,7 @@ Using Docker:
      ./run.sh sample_0.png
 
 ---
+
+## 🚀 Link
+
+https://stackoverflow.com/questions/74948926/wrong-image-width-and-height-when-read-it-with-c-sharp
