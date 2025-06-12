@@ -13,10 +13,11 @@ export interface Image {
   properties: { width: number; height: number };
 }
 export const getImage = async (image: sharp.Sharp): Promise<Image> => {
+  // Rotate to apply EXIF rotation (if any)
   const {
     info: { width, height, channels },
     data,
-  } = await image.raw().toBuffer({ resolveWithObject: true });
+  } = await image.rotate().raw().toBuffer({ resolveWithObject: true });
   const raw = await sharp(data, {
     raw: { width, height, channels },
   });
